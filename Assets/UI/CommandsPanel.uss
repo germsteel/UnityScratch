@@ -1,0 +1,190 @@
+.root {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+.commands-panel {
+    width: 250px;
+    background-color: rgb(40, 40, 40);
+    border-right-width: 1px;
+    border-right-color: rgb(60, 60, 60);
+}
+
+.panel-title {
+    padding: 10px;
+    font-size: 16px;
+    -unity-font-style: bold;
+    background-color: rgb(50, 50, 50);
+}
+
+.category-foldout {
+    margin: 5px;
+}
+
+.command-container {
+    padding: 5px;
+}
+
+.command-block {
+    padding: 8px;
+    margin: 4px;
+    border-radius: 5px;
+    transition-property: scale, background-color;
+    transition-duration: 0.1s;
+}
+
+.command-block:hover {
+    scale: 1.02;
+}
+
+.control-block {
+    background-color: rgb(230, 168, 45);
+}
+
+.control-block:hover {
+    background-color: rgb(255, 186, 50);
+}
+
+.event-block {
+    background-color: rgb(235, 98, 52);
+}
+
+.event-block:hover {
+    background-color: rgb(255, 106, 56);
+}
+
+.motion-block {
+    background-color: rgb(72, 133, 237);
+}
+
+.motion-block:hover {
+    background-color: rgb(79, 146, 255);
+}
+
+.editor-area {
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: rgb(30, 30, 30);
+}
+
+.toolbar {
+    height: 40px;
+    background-color: rgb(45, 45, 45);
+    flex-direction: row;
+    padding: 5px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(60, 60, 60);
+}
+
+.toolbar-button {
+    width: 80px;
+    height: 30px;
+    margin: 0 5px;
+    border-radius: 3px;
+    background-color: rgb(60, 60, 60);
+    border-width: 0;
+}
+
+.toolbar-button:hover {
+    background-color: rgb(70, 70, 70);
+}
+
+.workspace {
+    flex-grow: 1;
+}
+
+/* 拖拽相关样式 */
+.block-dragging {
+    position: absolute;
+    opacity: 0.8;
+}
+
+.block-shadow {
+    position: absolute;
+    opacity: 0.3;
+}
+
+/* Socket相关样式 */
+.socket {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: rgb(100, 100, 100);
+    margin: 0 5px;
+}
+
+.socket--filled {
+    background-color: rgb(150, 150, 150);
+}
+
+/* 参数输入相关样式 */
+.parameter-input {
+    background-color: rgb(60, 60, 60);
+    border-radius: 3px;
+    padding: 2px 5px;
+    min-width: 50px;
+}
+
+.parameter-input:focus {
+    background-color: rgb(70, 70, 70);
+}
+
+/* 动画效果 */
+.block-connect {
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.block-disconnect {
+    transition-property: transform;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+}
+
+/* 条件块特殊样式 */
+.condition-block {
+    background-color: rgb(150, 150, 150);
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+
+/* 变量块特殊样式 */
+.variable-block {
+    background-color: rgb(191, 97, 198);
+}
+
+.variable-block:hover {
+    background-color: rgb(209, 106, 217);
+}
+
+/* 提示和反馈 */
+.connection-hint {
+    border-width: 2px;
+    border-color: rgb(100, 200, 100);
+    border-radius: 5px;
+}
+
+.connection-invalid {
+    border-width: 2px;
+    border-color: rgb(200, 100, 100);
+    border-radius: 5px;
+}
+
+/* 响应式布局 */
+@media (max-width: 800px) {
+    .commands-panel {
+        width: 200px;
+    }
+}
+
+/* 动画状态 */
+.executing {
+    border-color: rgb(100, 200, 100);
+    border-width: 2px;
+}
+
+.error {
+    border-color: rgb(200, 100, 100);
+    border-width: 2px;
+}

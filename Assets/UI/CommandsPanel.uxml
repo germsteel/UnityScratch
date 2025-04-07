@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd">
+
+    <Style src="CommandsPanel.uss" />
+
+    <engine:VisualElement name="root" class="root">
+        <!-- 左侧命令面板 -->
+        <engine:VisualElement name="commands-panel" class="commands-panel">
+            <engine:Label text="Commands" class="panel-title" />
+            
+            <!-- 控制命令 -->
+            <engine:Foldout text="Control" class="category-foldout">
+                <engine:VisualElement class="command-container">
+                    <engine:VisualElement name="if-command" class="command-block control-block">
+                        <engine:Label text="If" />
+                    </engine:VisualElement>
+                    
+                    <engine:VisualElement name="repeat-command" class="command-block control-block">
+                        <engine:Label text="Repeat" />
+                    </engine:VisualElement>
+                    
+                    <engine:VisualElement name="forever-command" class="command-block control-block">
+                        <engine:Label text="Forever" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:Foldout>
+            
+            <!-- 事件命令 -->
+            <engine:Foldout text="Events" class="category-foldout">
+                <engine:VisualElement class="command-container">
+                    <engine:VisualElement name="click-event" class="command-block event-block">
+                        <engine:Label text="When Clicked" />
+                    </engine:VisualElement>
+                    
+                    <engine:VisualElement name="key-event" class="command-block event-block">
+                        <engine:Label text="When Key Pressed" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:Foldout>
+            
+            <!-- 运动命令 -->
+            <engine:Foldout text="Motion" class="category-foldout">
+                <engine:VisualElement class="command-container">
+                    <engine:VisualElement name="move-command" class="command-block motion-block">
+                        <engine:Label text="Move" />
+                    </engine:VisualElement>
+                    
+                    <engine:VisualElement name="rotate-command" class="command-block motion-block">
+                        <engine:Label text="Rotate" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:Foldout>
+        </engine:VisualElement>
+        
+        <!-- 主编辑区域 -->
+        <engine:VisualElement name="editor-area" class="editor-area">
+            <engine:VisualElement name="toolbar" class="toolbar">
+                <engine:Button name="play-button" class="toolbar-button">
+                    <engine:Label text="▶ Play" />
+                </engine:Button>
+                <engine:Button name="stop-button" class="toolbar-button">
+                    <engine:Label text="◼ Stop" />
+                </engine:Button>
+            </engine:VisualElement>
+            
+            <engine:VisualElement name="workspace" class="workspace">
+                <!-- 积木块将在运行时动态添加到这里 -->
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+
+</engine:UXML>
