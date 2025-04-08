@@ -86,32 +86,147 @@ graph TB
    - 增量更新
    - 样式继承优化
 
-### 3. 渲染优化
-```csharp
-// UI Toolkit渲染批处理示例
-class RenderBatch
-{
-    List<VisualElement> elements;
-    Matrix4x4 transformMatrix;
-    // 单个批次处理多个元素
-    void ProcessBatch()
-    {
-        // 合并渲染命令
-        // 减少DrawCall
-    }
-}
+### 3. 渲染机制对比
+
+#### UGUI渲染流程
+```mermaid
+graph TB
+    A[Canvas] -->|生成| B[Mesh]
+    B -->|每个Image/Text| C[SubMesh]
+    C -->|合并条件| D[DrawCall]
+    D -->|渲染| E[GPU]
+
+    subgraph 批处理条件
+    F[相同材质]
+    G[相同贴图]
+    H[相同Shader]
+    I[无重叠]
+    end
+
+    F & G & H & I -->|满足| D
 ```
 
-**优势：**
-1. 批处理渲染
-   - 自动合并相似元素
-   - 减少DrawCall数量
-   - 更好的GPU利用
+**UGUI批处理机制：**
+1. 静态批处理
+   ```csharp
+   // Canvas组件
+   Canvas canvas;
+   canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.None;
+   // 减少顶点属性，提高批处理效率
+   ```
+   - 要求UI元素完全静态
+   - 共享相同的渲染状态
+   - 自动合并网格数据
 
-2. 命令缓冲
-   - 渲染命令缓存
-   - 减少CPU开销
-   - 更高效的状态切换
+2. 动态批处理
+   ```csharp
+   // CanvasRenderer组件
+   CanvasRenderer renderer;
+   renderer.cull = true; // 启用剔除
+   // 运行时合并可能的元素
+   ```
+   - 基于空间划分
+   - 处理动态UI元素
+   - 实时计算合并机会
+
+3. 限制因素
+   ```
+   打断批处理的情况：
+   - RectMask2D
+   - 透明度变化
+   - 重叠UI元素
+   - Canvas嵌套
+   ```
+
+#### UI Toolkit渲染流程
+```mermaid
+graph TB
+    A[VisualElement] -->|收集| B[RenderChain]
+    B -->|排序| C[DrawChunks]
+    C -->|优化| D[RenderBatches]
+    D -->|GPU命令| E[CommandBuffer]
+    E -->|执行| F[GPU]
+```
+
+**UI Toolkit批处理机制：**
+1. 渲染链管理
+   ```csharp
+   internal class RenderChain
+   {
+       List<RenderChainCommand> commands;
+       // 使用脏标记系统
+       void MarkDirty(VisualElement ve)
+       {
+           // 只更新需要重绘的元素
+           // 维护渲染顺序
+       }
+   }
+   ```
+   - 维护元素渲染顺序
+   - 支持局部更新
+   - 自动处理遮罩和裁剪
+
+2. 绘制块优化
+   ```csharp
+   internal class DrawChunk
+   {
+       // 预排序和合并
+       void OptimizeDrawCalls()
+       {
+           // 分析渲染状态
+           // 合并相邻元素
+           // 生成最优绘制序列
+       }
+   }
+   ```
+   - 自动状态排序
+   - 智能合并策略
+   - 最小化状态切换
+
+3. 命令缓冲优化
+   ```csharp
+   CommandBuffer cmd = new CommandBuffer();
+   // 批量提交渲染命令
+   cmd.SetRenderTarget(destination);
+   cmd.DrawMesh(mesh, matrix, material);
+   ```
+   - 批量处理渲染命令
+   - 减少CPU和GPU同步
+   - 支持异步渲染
+
+4. 高级特性
+   ```
+   - GPU实例化支持
+   - 自动图集打包
+   - 渲染状态缓存
+   - 智能重用策略
+   ```
+
+**渲染性能对比：**
+```
+场景：1000个UI元素
+
+UGUI:
+- DrawCall: 10-20 (依赖布局)
+- 批次大小: ~100元素/批
+- 内存开销: 较大（每个元素独立网格）
+
+UI Toolkit:
+- DrawCall: 3-5 (优化后)
+- 批次大小: ~300元素/批
+- 内存开销: 较小（共享网格数据）
+```
+
+**批处理效率：**
+1. UGUI
+   - 受限于GameObject层级
+   - 依赖手动优化
+   - 容易被打断
+
+2. UI Toolkit
+   - 扁平化处理
+   - 自动优化
+   - 更稳定的性能
 
 ### 4. 事件系统优化
 ```mermaid
